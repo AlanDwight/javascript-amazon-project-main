@@ -1,41 +1,4 @@
-let productData = [
-    {
-        image : "images/products/athletic-cotton-socks-6-pairs.jpg",
-        name : "Black and Gray Athletic Cotton Socks - 6 Pairs",
-        rating : {
-            starRating : 4.5,
-            reviewCount : 87, 
-        }, 
-        priceInCents : 1090,
-    },
-    {
-        image : "images/products/intermediate-composite-basketball.jpg",
-        name : "Intermediate Size Basketball",
-        rating : {
-            starRating : 4,
-            reviewCount : 127, 
-        }, 
-        priceInCents : 2095,
-    },
-    {
-        image : "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
-        name : "Adults Plain Cotton T-Shirt - 2 Pack",
-        rating : {
-            starRating : 4.5,
-            reviewCount : 56, 
-        }, 
-        priceInCents : 799,
-    },
-    {
-        image : "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
-        name : "Adults Plain Cotton T-Shirt - 2 Pack",
-        rating : {
-            starRating : 4.5,
-            reviewCount : 56, 
-        }, 
-        priceInCents : 799,
-    },
-]
+// product data productData has already loaded on other script tag.
 
 let htmlGenerator = '';
 
@@ -55,14 +18,14 @@ productData.forEach((item,index)=>{
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${item.rating.starRating*10}.png">
+              src="images/ratings/rating-${item.rating.stars*10}.png">
             <div class="product-rating-count link-primary">
-              ${item.rating.reviewCount}
+              ${item.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            $${(item.priceInCents/100).toFixed(2)}
+            $${(item.priceCents/100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
