@@ -1,7 +1,7 @@
 let cartData = [
         {
-            // product : '',
-            // quantity : 0 ,
+            product : '',
+            quantity : 0 ,
         } 
 ];
 let data = [ 
