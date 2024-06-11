@@ -50,7 +50,8 @@ productData.forEach((item,index)=>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart-button" 
+          data-item-id = "${item.id}">
             Add to Cart
           </button>
           </div>`;
@@ -59,3 +60,49 @@ productData.forEach((item,index)=>{
 })
 
 document.querySelector('.js-products-grid').innerHTML = htmlGenerator ; 
+document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
+    item.addEventListener('click', ()=>{
+
+      for(let i = 0 ; i < cartData.length ; i ++ ){ 
+        if(item.dataset.itemId == cartData[i].productId){ 
+          cartData[i].quantity++;
+          console.log(cartData);
+          return;
+        }
+      }
+
+      let condition = false ; 
+      for(let j = 0 ; j < cartData.length ; j ++ ){
+        if(item.dataset.itemId != cartData[j].productId){
+          condition = true ; 
+        }
+      }
+
+      if(condition){ 
+        cartData.push({
+          productId : `${item.dataset.itemId}`,
+          quantity : 1
+        });
+        
+      }
+
+      console.log(cartData);
+
+      // let productNameVar = item.dataset.itemName ; 
+      // let matchingProduct ; 
+      // cartData.forEach((item, index)=> { 
+      //   if(item.product === productNameVar) { 
+      //     matchingProduct = item;
+      //   }
+      // })
+      // if(matchingProduct){ 
+      //   matchingProduct.quantity += 1 ; 
+      // }else { 
+      //   cartData.push({
+      //     product :`${productNameVar}`,
+      //     quantity : 1
+      //   });
+      // }
+      // console.log(cartData);
+    })
+})
