@@ -44,7 +44,7 @@ productData.forEach((item,index)=>{
           </div>
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${item.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -58,11 +58,13 @@ productData.forEach((item,index)=>{
           
           })
 
-          
+
+
 document.querySelector('.js-products-grid').innerHTML = htmlGenerator ; 
+
+let timeOutFunc;
 document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
     item.addEventListener('click', ()=>{
-
       let totalQuantity = 0 ;
       let quantityValue = Number(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value); 
 
@@ -78,6 +80,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
           })
           console.log(totalQuantity);
           document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
+          timerFunction();
           return;
         }
       }
@@ -108,8 +111,44 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
   
       console.log(totalQuantity);
       document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
+      timerFunction();
 
       // console.log(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value);
+
+
+      // ----------------------------------------------------------
+      // ----------------------------------------------------------
+              // something weird is happening in .js-added-to-cart-${item.dataset.itemId}
+              
+              // when i target js-added-to-cart-${item.dataset.itemId} with DOM and 
+              // change its css style and opacity, it changes the opacity of added-to-cart class
+              // not .js-added-to-cart-${item.dataset.itemId}
+
+              // note both of .js-added-to-cart-${item.dataset.itemId} and added-to-cart classes
+              // are under same 'div' html element 
+
+            //   <div class="added-to-cart js-added-to-cart-${item.id}">
+              //   <img src="images/icons/checkmark.png">
+              //   Added
+            //   </div>
+      // ----------------------------------------------------------
+      // ----------------------------------------------------------
+
+
+      // document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).style.opacity = 1 ;
+      
+      // document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).classList.remove('added-to-cart'); 
+      
+      function timerFunction(){ 
+        clearTimeout(timeOutFunc);
+        document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).classList.add('added-to-cart-activate'); 
+        
+        timeOutFunc = setTimeout(() => {
+          document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).classList.remove('added-to-cart-activate'); 
+        }, 2000);
+      }
+
+      // clearTimeout(timeOutFunc);
 
       // let productNameVar = item.dataset.itemName ; 
       // let matchingProduct ; 

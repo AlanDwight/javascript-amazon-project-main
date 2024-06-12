@@ -656,5 +656,48 @@ let productData = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-012661512199",
+    image: "images/products/21_98fd1b09-4c5a-493f-b760-b5b789611830.jpg",
+    name: "Giordano Long Umbrella",
+    rating: {
+      stars: 4,
+      count: 353
+    },
+    priceCents: 2499,
+    keywords: [
+      "Umbrella",
+      "rain",
+      "mens"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-0104220805",
+    image: "images/products/01042208-05-1_8e328167-ea15-4429-bcd3-dfd591e13b9b.jpg",
+    name: "Men's Linen Cotton Shirt",
+    rating: {
+      stars: 3.5,
+      count: 201
+    },
+    priceCents: 2399,
+    keywords: [
+      "shirt",
+      "casual",
+      "mens",
+      "outdoor"
+    ]
   }
 ];
+
+product  = "shirt"; 
+quantity = 1 ;
+
+// let someItem  = { 
+//   product : product , 
+//   quantity : quantity, 
+// }
+
+let someNewItem  = { product , quantity }
+
+console.log(`There is ${someNewItem.quantity} new ${someNewItem.product}.`)
