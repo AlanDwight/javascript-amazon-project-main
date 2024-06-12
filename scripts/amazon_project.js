@@ -29,7 +29,7 @@ productData.forEach((item,index)=>{
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${item.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -42,7 +42,6 @@ productData.forEach((item,index)=>{
               <option value="10">10</option>
             </select>
           </div>
-
           <div class="product-spacer"></div>
 
           <div class="added-to-cart">
@@ -64,11 +63,12 @@ document.querySelector('.js-products-grid').innerHTML = htmlGenerator ;
 document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
     item.addEventListener('click', ()=>{
 
-      let totalQuantity = 0 ; 
+      let totalQuantity = 0 ;
+      let quantityValue = Number(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value); 
 
       for(let i = 0 ; i < cartData.length ; i ++ ){ 
         if(item.dataset.itemId == cartData[i].productId){ 
-          cartData[i].quantity++;
+          cartData[i].quantity+= quantityValue;
           console.log(cartData);
           
           cartData.forEach((item, index)=> { 
@@ -92,7 +92,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
       if(condition){ 
         cartData.push({
           productId : `${item.dataset.itemId}`,
-          quantity : 1
+          quantity : quantityValue,
         });
         
       }
@@ -109,6 +109,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
       console.log(totalQuantity);
       document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
 
+      // console.log(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value);
 
       // let productNameVar = item.dataset.itemName ; 
       // let matchingProduct ; 
