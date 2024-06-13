@@ -5,6 +5,7 @@ import { cartData } from "../data/cart.js";
 import { productData } from "../data/products.js";
 
 let htmlGenerator = '';
+let checkoutPageGenerator = ''; 
 
 productData.forEach((item,index)=>{
     console.log(item.name);
@@ -54,7 +55,7 @@ productData.forEach((item,index)=>{
           </div>
 
           <button class="add-to-cart-button button-primary js-add-to-cart-button" 
-          data-item-id = "${item.id}">
+          data-item-id = "${item.id}" data-item-image = "${item.image}" data-item-name = "${item.name}" data-item-price = "${item.priceCents}">
             Add to Cart
           </button>
           </div>`;
@@ -62,9 +63,88 @@ productData.forEach((item,index)=>{
           
           })
 
+cartData.forEach((addedProduct, index)=>{
+  let htmlGen = `<div class="cart-item-container">
+            <div class="delivery-date">
+              Delivery date: Tuesday, June 21
+            </div>
+
+            <div class="cart-item-details-grid">
+              <img class="product-image"
+                src="${addedProduct.image}">
+
+              <div class="cart-item-details">
+                <div class="product-name">
+                  ${addedProduct.name}
+                </div>
+                <div class="product-price">
+                  $${addedProduct.price}
+                </div>
+                <div class="product-quantity">
+                  <span>
+                    Quantity: <span class="quantity-label">${addedProduct.quantity}</span>
+                  </span>
+                  <span class="update-quantity-link link-primary">
+                    Update
+                  </span>
+                  <span class="delete-quantity-link link-primary">
+                    Delete
+                  </span>
+                </div>
+              </div>
+
+              <div class="delivery-options">
+                <div class="delivery-options-title">
+                  Choose a delivery option:
+                </div>
+                <div class="delivery-option">
+                  <input type="radio" checked
+                    class="delivery-option-input"
+                    name="delivery-option-1">
+                  <div>
+                    <div class="delivery-option-date">
+                      Tuesday, June 21
+                    </div>
+                    <div class="delivery-option-price">
+                      FREE Shipping
+                    </div>
+                  </div>
+                </div>
+                <div class="delivery-option">
+                  <input type="radio"
+                    class="delivery-option-input"
+                    name="delivery-option-1">
+                  <div>
+                    <div class="delivery-option-date">
+                      Wednesday, June 15
+                    </div>
+                    <div class="delivery-option-price">
+                      $4.99 - Shipping
+                    </div>
+                  </div>
+                </div>
+                <div class="delivery-option">
+                  <input type="radio"
+                    class="delivery-option-input"
+                    name="delivery-option-1">
+                  <div>
+                    <div class="delivery-option-date">
+                      Monday, June 13
+                    </div>
+                    <div class="delivery-option-price">
+                      $9.99 - Shipping
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+          checkoutPageGenerator += htmlGen; 
+})
 
 
-document.querySelector('.js-products-grid').innerHTML = htmlGenerator ; 
+
+document.querySelector('.js-products-grid').innerHTML = htmlGenerator ;
 
 let timeOutFunc;
 document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
@@ -79,13 +159,9 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
           cartData[i].quantity+= quantityValue;
           console.log(cartData);
           
-          cartData.forEach((item, index)=> { 
-  
-            totalQuantity += item.quantity;  
+          cartQuantityCalc();
           
-          })
           console.log(totalQuantity);
-          document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
           timerFunction();
           return;
         }
@@ -103,20 +179,18 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
         cartData.push({
           productId : `${item.dataset.itemId}`,
           quantity : quantityValue,
+          image : `${item.dataset.itemImage}`,
+          name : `${item.dataset.itemName}`,
+          price : `${((item.dataset.itemPrice)/100).toFixed(2)}`
         });
       }
 
 
       console.log(cartData);
 
-      cartData.forEach((item, index)=> { 
-  
-        totalQuantity += item.quantity;  
-      
-      })
+      cartQuantityCalc();
   
       console.log(totalQuantity);
-      document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
 
       // console.log(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value);
 
@@ -152,6 +226,15 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
           document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).classList.remove('added-to-cart-activate'); 
         }, 2000);
       }
+
+      function cartQuantityCalc(){ 
+        cartData.forEach((item, index)=> { 
+  
+          totalQuantity += item.quantity;  
+        
+        })
+        document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
+      };
 
       // clearTimeout(timeOutFunc);
 
