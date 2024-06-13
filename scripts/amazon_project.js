@@ -2,6 +2,7 @@
 
 import { cartData } from "../data/cart.js";
 // import { cartData as myCart } from "../data/cart.js";
+import { productData } from "../data/products.js";
 
 let htmlGenerator = '';
 
