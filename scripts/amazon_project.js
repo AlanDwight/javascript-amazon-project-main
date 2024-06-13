@@ -1,5 +1,8 @@
 // product data productData has already loaded on other script tag.
 
+import { cartData } from "../data/cart.js";
+// import { cartData as myCart } from "../data/cart.js";
+
 let htmlGenerator = '';
 
 productData.forEach((item,index)=>{
@@ -65,11 +68,13 @@ document.querySelector('.js-products-grid').innerHTML = htmlGenerator ;
 let timeOutFunc;
 document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
     item.addEventListener('click', ()=>{
+      clearTimeout(timeOutFunc);
       let totalQuantity = 0 ;
       let quantityValue = Number(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value); 
 
       for(let i = 0 ; i < cartData.length ; i ++ ){ 
         if(item.dataset.itemId == cartData[i].productId){ 
+          clearTimeout(timeOutFunc);
           cartData[i].quantity+= quantityValue;
           console.log(cartData);
           
@@ -88,6 +93,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
       let condition = false ; 
       for(let j = 0 ; j < cartData.length ; j ++ ){
         if(item.dataset.itemId != cartData[j].productId){
+          timerFunction();
           condition = true ; 
         }
       }
@@ -97,7 +103,6 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
           productId : `${item.dataset.itemId}`,
           quantity : quantityValue,
         });
-        
       }
 
 
@@ -111,7 +116,6 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
   
       console.log(totalQuantity);
       document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
-      timerFunction();
 
       // console.log(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value);
 

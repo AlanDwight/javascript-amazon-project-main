@@ -1,4 +1,4 @@
-let cartData = [
+export let cartData = [
         {
             product : '',
             quantity : 0 ,
