@@ -146,6 +146,10 @@
   cursor: pointer;
 }
 
+.quantity-input{
+  width: 30px;
+}
+
 .delivery-option-input {
   margin-left: 0px;
   cursor: pointer;
@@ -208,4 +212,34 @@
 
   margin-top: 11px;
   margin-bottom: 15px;
+}
+
+.is-editing-quantity{ 
+  display: inline;
+}
+
+.editing-quantity{
+  display: none;
+}
+
+.payment-summary-row:nth-child(6){
+  /* display: grid;
+  1fr auto; means the width of the 2nd column will be
+     determined by the elements inside the column (auto).
+     The 1st column will take up the remaining space.
+  grid-template-columns: 1fr auto;
+
+  font-size: 15px;
+  margin-bottom: 9px; */
+}
+
+.freeShipping{ 
+  display: none;
+  /* 1fr auto; means the width of the 2nd column will be
+     determined by the elements inside the column (auto).
+     The 1st column will take up the remaining space. */
+  grid-template-columns: 1fr auto;
+
+  font-size: 15px;
+  margin-bottom: 9px;
 }
