@@ -7,3 +7,11 @@ export function sayHello(){
 
 export default sayHello;
 
+// let dataStruct = ()=>{
+//     console.log('say hello');
+// }
+
+// dataStruct();
+
+
+

@@ -40,12 +40,12 @@ function deliveryOptionGenerator(addedProductProductId){
       }
       let htmlGen = `
                     <div class="delivery-option">
-                      <input type="radio" checked="" class="delivery-option-input" name="delivery-option-${addedProductProductId}">
+                      <input type="radio" checked="" class="delivery-option-input" name="delivery-option-${addedProductProductId}" value="${[priceMessage, date]}"">
                         <div>
                           <div class="delivery-option-date">
                             ${date}
                           </div>
-                          <div class="delivery-option-price">
+                          <div class="delivery-option-price-${addedProductProductId}">
                             ${priceMessage}
                           </div>
                       </div>
@@ -71,10 +71,11 @@ cartData.forEach((addedProduct, index)=>{
     //     }
     // })
     // console.log(matchingItem);
+    
 
     let htmlGen = `<div class="cart-item-container-${addedProduct.productId}">
-              <div class="delivery-date">
-                Delivery date: Tuesday, June 21
+              <div class="delivery-date delivery-date-${addedProduct.productId}">
+                Delivery date: ${dayjs().add(1,"days").format('dddd, MMMM D')}
               </div>
   
               <div class="cart-item-details-grid">
@@ -113,7 +114,7 @@ cartData.forEach((addedProduct, index)=>{
                     Choose a delivery option:
                   </div>
 
-                  <div class = "delivery-options-${addedProduct.productId}">
+                  <div class = "delivery-options-${addedProduct.productId} btn-group-${addedProduct.productId}" data-toggle="buttons">
                     ${deliveryOptionGenerator(addedProduct.productId)}
                   </div>
                  
@@ -125,11 +126,40 @@ cartData.forEach((addedProduct, index)=>{
               </div>
             </div>`
             checkoutPageGenerator += htmlGen;
+
+            document.querySelector('.js-order-summary').innerHTML = checkoutPageGenerator;
+
+
+            // console.log(document.getElementsByName(`delivery-option-${addedProduct.productId}`))
             
+            
+           
 
   })
 console.log(cartData.length);
-document.querySelector('.js-order-summary').innerHTML = checkoutPageGenerator;
+
+
+// cartData.forEach((item)=>{
+
+  
+
+// })
+
+
+
+
+// let nameArray = []; 
+// cartData.forEach((item,index)=>{
+//   var ele = document.getElementsByName(`delivery-option-${item.productId}`);
+//   // console.log(ele)
+//   ele.forEach((i)=>{
+//     // console.log(i.name)
+//     nameArray.push(i.name);
+//   }) 
+// })
+// console.log(nameArray);
+
+// document.querySelector('delivery-option-input')
 
 // cartData.forEach((item, index)=>{
   
@@ -141,42 +171,73 @@ document.querySelector('.js-order-summary').innerHTML = checkoutPageGenerator;
 
 let totalCartItem = 0 ;
 let totalExpanse = 0 ; 
+let shippingHandling = 9.99 ;
+
 
 cartData.forEach((item, index)=>{ 
   totalCartItem += item.quantity;
-  totalExpanse += (Number(item.price) * Number(item.quantity)); 
-})
-let shippingHandling = 4.99;
-
-if(totalCartItem == 0 ) { 
-  shippingHandling = 0;
-}
-
-let totalBeforeTax = (totalExpanse + shippingHandling).toFixed(2);
-let estTax = (totalBeforeTax*0.1).toFixed(2);
-let orderTotal = (Number(totalBeforeTax) + Number(estTax)).toFixed(2);
-
-if(totalExpanse >= 40) { 
-
-  document.querySelector('.js-free-shipping').innerHTML = `-$${shippingHandling}`;
-  document.querySelector('.freeShipping').style.display = 'grid';
-  orderTotal = (Number(orderTotal - shippingHandling)).toFixed(2);
+  totalExpanse += (Number(item.price) * Number(item.quantity));
   
+  
+  document.querySelector(`.btn-group-${item.productId}`).addEventListener("click", (evt)=>{
+    let shippingHandling2 = 0 
+    if(evt.target.type === "radio"){
+
+    let datePriceArray = evt.target.value; 
+    document.querySelector(`.delivery-date-${item.productId}`).innerHTML = `Delivery date: ${datePriceArray.split(',').slice(1).join(',').trim()}`;
+   
+    shippingHandling = datePriceCal(datePriceArray); 
+        
+    }
+    orderSummary();
+    });
+})
+
+function datePriceCal(datePriceArray){
+  let shippingHandling2 = 0 ; 
+  if(datePriceArray == "FREE Shipping,Tuesday, July 2"){
+    shippingHandling2 = 0;
+  }else if (datePriceArray == "$4.99 - Shipping,Friday, June 28") {
+    shippingHandling2 = 4.99; 
+  }else if (datePriceArray == "$9.99 - Shipping,Wednesday, June 26") { 
+    shippingHandling2 = 9.99;
+  }
+  return Number(shippingHandling2);
 }
+orderSummary();
 
-document.querySelector('.js-check-out-items').innerHTML = `${totalCartItem} items`;
+function orderSummary(){
+            if(totalCartItem == 0 ) { 
+              shippingHandling = 0;
+            }
 
-document.querySelector('.js-payment-total-items-count').innerHTML = `Items (${totalCartItem}):`;
+            let totalBeforeTax = (totalExpanse + shippingHandling).toFixed(2);
+            let estTax = (totalBeforeTax*0.1).toFixed(2);
+            let orderTotal = (Number(totalBeforeTax) + Number(estTax)).toFixed(2);
 
-document.querySelector('.js-payment-products-expanse').innerHTML = totalExpanse.toFixed(2);
+            if(totalExpanse >= 40) { 
 
-document.querySelector('.js-shipping-handling').innerHTML = `$${shippingHandling}`; 
+              document.querySelector('.js-free-shipping').innerHTML = `-$${shippingHandling}`;
+              document.querySelector('.freeShipping').style.display = 'grid';
+              orderTotal = (Number(orderTotal - shippingHandling)).toFixed(2);
+              
+            }
 
-document.querySelector('.js-total-before-tax').innerHTML = totalBeforeTax;
+            document.querySelector('.js-check-out-items').innerHTML = `${totalCartItem} items`;
 
-document.querySelector('.js-est-tax').innerHTML = estTax;
+            document.querySelector('.js-payment-total-items-count').innerHTML = `Items (${totalCartItem}):`;
 
-document.querySelector('.js-order-total').innerHTML = orderTotal;
+            document.querySelector('.js-payment-products-expanse').innerHTML = totalExpanse.toFixed(2);
+
+            document.querySelector('.js-shipping-handling').innerHTML = `$${shippingHandling}`; 
+
+            document.querySelector('.js-total-before-tax').innerHTML = totalBeforeTax;
+
+            document.querySelector('.js-est-tax').innerHTML = estTax;
+
+            document.querySelector('.js-order-total').innerHTML = orderTotal;
+
+}
 
 document.querySelectorAll('.js-remove-cart-item').forEach((cartItem, index)=>{ 
   cartItem.addEventListener('click',()=>{
