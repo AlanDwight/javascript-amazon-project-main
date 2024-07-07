@@ -187,7 +187,8 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
           quantity : quantityValue,
           image : `${item.dataset.itemImage}`,
           name : `${item.dataset.itemName}`,
-          price : `${((item.dataset.itemPrice)/100).toFixed(2)}`
+          price : `${((item.dataset.itemPrice)/100).toFixed(2)}`, 
+          itemID : '1', 
         });
         saveCartDataFunc(cartData); 
       }
