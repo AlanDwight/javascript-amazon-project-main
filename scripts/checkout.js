@@ -30,9 +30,42 @@ let deliveryOptionSection  = '';
 
 function deliveryOptionGenerator(addedProductProductId){  
   let deliveryOptionSectionhtmlGen = ''; 
-  deliveryOptions.forEach((option, index)=>{ 
-      let daysOpt = dayjs().add(option.deliveryDays, 'day');
+  deliveryOptions.forEach((option, index)=>{
+      //
+      let todayDate = dayjs().format('d');
+      let day; 
+      day = option.deliveryDays; 
+
+      if(todayDate == 0 || todayDate == 6) { 
+        console.log('it\'s weekend');
+        if(todayDate == 6 && day == 1 ){ 
+          day = 2 ; 
+        }
+        if (todayDate == 0 && day == 7 ){ 
+          day = 8 ; 
+        }
+        if (todayDate == 6 && day == 7){ 
+          day = 9;
+        }
+      }else{ 
+        console.log('it\s a weekday');
+        if(todayDate == 3 && day == 3) { 
+          day = 5 ; 
+        }
+        
+        if(todayDate == 5 && day == 1 ){ 
+          day = 3; 
+        }
+    
+        if(todayDate == 4 && day == 3){ 
+          day = 4;
+        }
+    
+      }
+    
+      let daysOpt = dayjs().add(day, 'day');
       let date = daysOpt.format('dddd, MMMM D');
+      //
       let priceMessage = ''; 
       if(option.id == 1 ){ 
         priceMessage = 'FREE Shipping';

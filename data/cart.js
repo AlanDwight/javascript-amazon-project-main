@@ -136,22 +136,55 @@ export function updateCartStorage(product, productID, deliveryOptions){
 
 export function dateCalculation(addedProduct){
   let day ;
+  let days; 
+  // let day; 
   let dateArray = []; 
   deliveryOptions.forEach ((options, index)=> { 
     if(addedProduct.itemID == options.id ){
        day =  options.deliveryDays; 
+       days =  options.deliveryDays; 
     }
   })
+
+  let todayDate = dayjs().format('d');
+  
+  if(todayDate == 0 || todayDate == 6) { 
+    console.log('it\'s weekend');
+    if(todayDate == 6 && day == 1 ){ 
+      day = 2 ; 
+    }
+    if (todayDate == 0 && day == 7 ){ 
+      day = 8 ; 
+    }
+    if (todayDate == 6 && day == 7){ 
+      day = 9;
+    }
+  }else{ 
+    console.log('it\s a weekday');
+    if(todayDate == 3 && day == 3) { 
+      day = 5 ; 
+    }
+    
+    if(todayDate == 5 && day == 1 ){ 
+      day = 3; 
+    }
+
+    if(todayDate == 4 && day == 3){ 
+      day = 4;
+    }
+
+  }
+
   let daysOpt = dayjs().add(Number(day), 'day');
   let date = daysOpt.format('dddd, MMMM D');
 
   let deliveryCharge = 0;
 
-  if(day == 7){ 
+  if(days == 7){ 
     deliveryCharge = 0;
-  }else if(day == 3){ 
+  }else if(days == 3){ 
     deliveryCharge = 4.99; 
-  }else if(day == 1){
+  }else if(days == 1){
     deliveryCharge = 9.99;
   }
 
