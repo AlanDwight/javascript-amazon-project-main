@@ -307,11 +307,12 @@ document.querySelectorAll('.js-remove-cart-item').forEach((cartItem, index)=>{
     console.log(itemId); 
 
 
-    document.querySelector(`.cart-item-container-${itemId}`).remove();
+    // document.querySelector(`.cart-item-container-${itemId}`).remove();
     // console.log(document.querySelector(`.cart-item-container-${itemId}`));
 
     let newCart = removeCartItem(itemId);
-    location.reload();
+
+    // location.reload();
     console.log(removeCartItem(itemId))
 
     
@@ -322,7 +323,7 @@ document.querySelectorAll('.js-remove-cart-item').forEach((cartItem, index)=>{
     // localStorage.removeItem('cartData');
     // saveCartDa taFunc(newCart);
     // pageGen(newCart);
-    
+    dataGenerator();
     
 
 
@@ -526,8 +527,8 @@ document.querySelectorAll('.js-update-quantity').forEach((update,index)=>{
       console.log(editedQuantity); 
       document.querySelector(`.edit-product-quantity-${productDataId}`).classList.remove('is-editing-quantity');
       document.querySelector(`.edit-product-quantity-${productDataId}`).classList.add('editing-quantity');
-      
-      location.reload();
+      dataGenerator();
+      // location.reload();
     })
     
   })
