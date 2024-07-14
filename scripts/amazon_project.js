@@ -3,6 +3,7 @@
 import { cartData, saveCartDataFunc } from "../data/cart.js";
 // import { cartData as myCart } from "../data/cart.js";
 import { productData } from "../data/products.js";
+import { converterFunc } from "./utils/currencyConverter.js";
 
 let htmlGenerator = '';
 let checkoutPageGenerator = ''; 
@@ -187,7 +188,8 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
           quantity : quantityValue,
           image : `${item.dataset.itemImage}`,
           name : `${item.dataset.itemName}`,
-          price : `${((item.dataset.itemPrice)/100).toFixed(2)}`, 
+          // price : `${((item.dataset.itemPrice)/100).toFixed(2)}`, 
+          price : `${converterFunc(item.dataset.itemPrice)}`, 
           itemID : '1', 
         });
         saveCartDataFunc(cartData); 

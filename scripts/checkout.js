@@ -3,6 +3,7 @@
 import { cartData,removeCartItem, saveCartDataFunc,updateCartStorage, dateCalculation } from "../data/cart.js";
 import { productData } from "../data/products.js";
 import { deliveryOptions } from "../data/deliveryOption.js";
+import { converterFunc } from "./utils/currencyConverter.js";
 
 // loading external libraries with ESM
 
@@ -70,7 +71,7 @@ function deliveryOptionGenerator(addedProductProductId){
       if(option.id == 1 ){ 
         priceMessage = 'FREE Shipping';
       }else{ 
-        priceMessage = '$' + option.deliveryPirceCent/100 + ' - ' + 'Shipping';  
+        priceMessage = '$' + converterFunc(option.deliveryPirceCent) + ' - ' + 'Shipping';  
       }
 
       let productItemID = addedProductProductId.itemID; 
@@ -320,15 +321,15 @@ function orderSummary(totalCost){
 
             document.querySelector('.js-payment-total-items-count').innerHTML = `Items (${totalCartItem}):`;
 
-            document.querySelector('.js-payment-products-expanse').innerHTML = totalExpanse.toFixed(2);
+            document.querySelector('.js-payment-products-expanse').innerHTML = `$${totalExpanse.toFixed(2)}`;
 
             // document.querySelector('.js-shipping-handling').innerHTML = `$${shippingHandling}`; 
 
-            document.querySelector('.js-total-before-tax').innerHTML = totalBeforeTax;
+            document.querySelector('.js-total-before-tax').innerHTML = `$${totalBeforeTax}`;
 
-            document.querySelector('.js-est-tax').innerHTML = estTax;
+            document.querySelector('.js-est-tax').innerHTML = `$${estTax}`;
 
-            document.querySelector('.js-order-total').innerHTML = orderTotal;
+            document.querySelector('.js-order-total').innerHTML = `$${orderTotal}`;
 
 }
 
