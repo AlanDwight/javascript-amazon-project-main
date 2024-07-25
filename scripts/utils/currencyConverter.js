@@ -1,5 +1,5 @@
 export function converterFunc(cents){ 
-    let output = (cents/100).toFixed(2); 
+    let output = (Math.round(cents)/100).toFixed(2); 
     return output; 
 }
 

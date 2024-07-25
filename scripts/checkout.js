@@ -4,7 +4,7 @@ import { cartData,removeCartItem, saveCartDataFunc,updateCartStorage, dateCalcul
 import { productData } from "../data/products.js";
 import { deliveryOptions } from "../data/deliveryOption.js";
 import { converterFunc } from "./utils/currencyConverter.js";
-
+import '../data/cart - oop.js';
 // loading external libraries with ESM
 
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'; 
@@ -99,7 +99,7 @@ function deliveryOptionGenerator(addedProductProductId){
 // let day ; 
 // let daysOpt = dayjs().add(Number(day), 'day');
 // let date = daysOpt.format('dddd, MMMM D');
-function dataGenerator(){
+export function dataGenerator(){
         let checkoutPageGenerator = ''; 
         let totalCost = 0; 
         cartData.forEach((addedProduct, index)=>{

@@ -6,10 +6,9 @@
 // ];
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions } from './deliveryOption.js';
+import { converterFunc } from '../scripts/utils/currencyConverter.js';
 
 
-let jsonObj = localStorage.getItem('cartData'); 
-let jsObj = JSON.parse(jsonObj);
 
 // export let cartData = jsObj ; 
 
@@ -50,41 +49,95 @@ let jsObj = JSON.parse(jsonObj);
 
 // }
 
-export let cartData = jsObj || [ 
-  {
-      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-      image: "images/products/athletic-cotton-socks-6-pairs.jpg",
-      name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
-      rating: {
-        stars: 4.5,
-        count: 87
-      },
-      price: (1090/100).toFixed(2),
-      keywords: [
-        "socks",
-        "sports",
-        "apparel"
-      ], 
-      quantity : 2 , 
-      itemID : '1', 
-    },
+// ----------------------------------------------------
+
+// export let cartData;
+// dataCart();
+// export function dataCart(){
+//   cartData = jsObj || [ 
+//     {
+//         productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+//         image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+//         name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+//         rating: {
+//           stars: 4.5,
+//           count: 87
+//         },
+//         price: (1090/100).toFixed(2),
+//         keywords: [
+//           "socks",
+//           "sports",
+//           "apparel"
+//         ], 
+//         quantity : 2 , 
+//         itemID : '1', 
+//       },
+//       {
+//         productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+//         image: "images/products/intermediate-composite-basketball.jpg",
+//         name: "Intermediate Size Basketball",
+//         rating: {
+//           stars: 4,
+//           count: 127
+//         },
+//         price: (2095/100).toFixed(2),
+//         keywords: [
+//           "sports",
+//           "basketballs"
+//         ],
+//         quantity : 3 ,
+//         itemID : '2',
+//       },
+//   ]
+// }
+
+
+// ----------------------------------------------------
+export let cartData; 
+cartStorageFunc ();
+function cartStorageFunc(){
+  
+  let jsonObj = localStorage.getItem('cartData'); 
+  let jsObj = JSON.parse(jsonObj);
+  
+  cartData = jsObj || [ 
     {
-      productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-      image: "images/products/intermediate-composite-basketball.jpg",
-      name: "Intermediate Size Basketball",
-      rating: {
-        stars: 4,
-        count: 127
+        productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+        image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+        name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+        rating: {
+          stars: 4.5,
+          count: 87
+        },
+        price: (1090/100).toFixed(2),
+        keywords: [
+          "socks",
+          "sports",
+          "apparel"
+        ], 
+        quantity : 2 , 
+        itemID : '1', 
       },
-      price: (2095/100).toFixed(2),
-      keywords: [
-        "sports",
-        "basketballs"
-      ],
-      quantity : 3 ,
-      itemID : '2',
-    },
-]
+      {
+        productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+        image: "images/products/intermediate-composite-basketball.jpg",
+        name: "Intermediate Size Basketball",
+        rating: {
+          stars: 4,
+          count: 127
+        },
+        price: (2095/100).toFixed(2),
+        keywords: [
+          "sports",
+          "basketballs"
+        ],
+        quantity : 3 ,
+        itemID : '2',
+      },
+  ]
+}
+
+
 
 let data = [ 
     { 
@@ -92,6 +145,72 @@ let data = [
         qu : 2,
     }
 ]
+
+export function addingProductToCart(item){
+  let timeOutFunc;
+  clearTimeout(timeOutFunc);
+  let totalQuantity = 0 ;
+  let quantityValue = Number(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value);
+  for(let i = 0 ; i < cartData.length ; i ++ ){ 
+    if(item.dataset.itemId == cartData[i].productId){ 
+      clearTimeout(timeOutFunc);
+      cartData[i].quantity+= quantityValue;
+      console.log(cartData);
+      
+      cartQuantityCalc();
+      
+      console.log(totalQuantity);
+      timerFunction();
+      saveCartDataFunc(cartData);
+      return;
+    }
+  }
+
+  let condition = true ; 
+  // for(let j = 0 ; j < cartData.length ; j ++ ){
+  //   if(item.dataset.itemId != cartData[j].productId){
+  //     timerFunction();
+  //     condition = true ; 
+  //   }
+  // }
+
+  if(condition){ 
+    timerFunction();
+    cartData.push({
+      productId : `${item.dataset.itemId}`,
+      quantity : quantityValue,
+      image : `${item.dataset.itemImage}`,
+      name : `${item.dataset.itemName}`,
+      // price : `${((item.dataset.itemPrice)/100).toFixed(2)}`, 
+      price : `${converterFunc(item.dataset.itemPrice)}`, 
+      itemID : '1', 
+    });
+    cartQuantityCalc();
+    saveCartDataFunc(cartData);
+    
+  }
+
+  function timerFunction(){ 
+    clearTimeout(timeOutFunc);
+    document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).classList.add('added-to-cart-activate'); 
+    
+    timeOutFunc = setTimeout(() => {
+      document.querySelector(`.js-added-to-cart-${item.dataset.itemId}`).classList.remove('added-to-cart-activate'); 
+    }, 2000);
+  }
+
+  function cartQuantityCalc(){ 
+    cartData.forEach((item, index)=> { 
+
+      totalQuantity += item.quantity;  
+    
+    })
+    document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
+  };
+  console.log(cartData);
+  console.log(totalQuantity);
+
+}
 
 export function removeCartItem(cartItemId){ 
   let newCart = [];
