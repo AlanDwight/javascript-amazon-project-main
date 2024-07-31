@@ -4,8 +4,11 @@ import { cartData, saveCartDataFunc, addingProductToCart } from "../data/cart.js
 // import { cartData as myCart } from "../data/cart.js";
 import { productData } from "../data/products.js";
 import { converterFunc } from "./utils/currencyConverter.js";
-import '../data/cart - oop.js';
+// import '../data/cart - oop.js';
+import '../data/cart - class.js';
 // import { cartData } from "../data/cart - oop.js";
+import { cartDataInstance } from "../data/cart - class.js";
+// import { CartClass } from "../data/cart - class.js";
 
 let htmlGenerator = '';
 let checkoutPageGenerator = ''; 
@@ -26,14 +29,14 @@ productData.forEach((item,index)=>{
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${item.rating.stars*10}.png">
+              src= "${item.calculateStarRating()}">
             <div class="product-rating-count link-primary">
               ${item.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            $${(item.priceCents/100).toFixed(2)}
+            $${item.calculateProductPrice()}
           </div>
 
           <div class="product-quantity-container">
@@ -50,6 +53,8 @@ productData.forEach((item,index)=>{
               <option value="10">10</option>
             </select>
           </div>
+          <!-- ${item.extraInfoHtmlGen()} -->
+          <div class = "js-size-chart-container-${item.id}"></div> 
           <div class="product-spacer"></div>
 
           <div class="added-to-cart js-added-to-cart-${item.id}">
@@ -58,7 +63,7 @@ productData.forEach((item,index)=>{
           </div>
 
           <button class="add-to-cart-button button-primary js-add-to-cart-button" 
-          data-item-id = "${item.id}" data-item-image = "${item.image}" data-item-name = "${item.name}" data-item-price = "${item.priceCents}">
+          data-item-id = "${item.id}" data-item-image = "${item.image}" data-item-name = "${item.name}" data-item-price = "${item.calculateProductPrice()}">
             Add to Cart
           </button>
           </div>`;
@@ -144,15 +149,36 @@ productData.forEach((item,index)=>{
 //           checkoutPageGenerator += htmlGen; 
 // })
 
-
 document.querySelector('.js-products-grid').innerHTML = htmlGenerator ;
 
-let total = 0 ;
-cartData.forEach((item,index)=>{
-  total += item.quantity ; 
+// to generate product size link differently 
+
+productData.forEach((item, index)=>{
+  if(item.sizeChartLink != null){
+    document.querySelector(`.js-size-chart-container-${item.id}`).innerHTML = `
+        <a href=${item.sizeChartLink} target = "_blank">
+                  <div class = "js-size-chart size-chart"> Size chart </div>
+        </a>
+    `;
+  }else if(item.powerUsage != null){ 
+    document.querySelector(`.js-size-chart-container-${item.id}`).innerHTML = `
+        <a href=${item.powerUsage} target = "_blank">
+                  <div class = "js-size-chart size-chart"> Power Usage </div>
+        </a>`; 
+  }
 })
 
-document.querySelector('.js-cart-quantity').innerHTML = total;
+function cartQuant(){
+  let total = 0 ;
+  cartData.forEach((item,index)=>{
+    total += item.quantity ; 
+  })
+  
+  document.querySelector('.js-cart-quantity').innerHTML = total;
+}
+
+cartQuant();
+
 
 // let timeOutFunc;
 document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
@@ -160,9 +186,10 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
       // clearTimeout(timeOutFunc);
       // let totalQuantity = 0 ;
       // let quantityValue = Number(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value); 
-
-      addingProductToCart(item);
       
+      // addingProductToCart(item);
+      cartDataInstance.addingProductToCart(item);
+      // cartDataInstance.cartQuantityCalc();
       // cartData.addingProductToCart(item);
 
       // function addingProductToCart(item){

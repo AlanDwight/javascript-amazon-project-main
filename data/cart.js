@@ -182,7 +182,7 @@ export function addingProductToCart(item){
       image : `${item.dataset.itemImage}`,
       name : `${item.dataset.itemName}`,
       // price : `${((item.dataset.itemPrice)/100).toFixed(2)}`, 
-      price : `${converterFunc(item.dataset.itemPrice)}`, 
+      price : `${item.dataset.itemPrice}`, 
       itemID : '1', 
     });
     cartQuantityCalc();

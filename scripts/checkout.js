@@ -4,7 +4,8 @@ import { cartData,removeCartItem, saveCartDataFunc,updateCartStorage, dateCalcul
 import { productData } from "../data/products.js";
 import { deliveryOptions } from "../data/deliveryOption.js";
 import { converterFunc } from "./utils/currencyConverter.js";
-import '../data/cart - oop.js';
+// import '../data/cart - oop.js';
+import '../data/cart - class.js';
 // loading external libraries with ESM
 
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'; 

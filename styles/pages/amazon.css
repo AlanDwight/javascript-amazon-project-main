@@ -168,3 +168,8 @@
   padding: 8px;
   border-radius: 50px;
 }
+
+.size-chart{
+  color : blue ; 
+  text-decoration: underline;
+}
