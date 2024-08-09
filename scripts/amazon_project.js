@@ -2,7 +2,7 @@
 
 import { cartData, saveCartDataFunc, addingProductToCart } from "../data/cart.js";
 // import { cartData as myCart } from "../data/cart.js";
-import { productData, loadBackendProductList} from "../data/products.js";
+import { productData, loadBackendProductList, loadBackendProductListUsingFetch} from "../data/products.js";
 import { converterFunc } from "./utils/currencyConverter.js";
 // import '../data/cart - oop.js';
 import '../data/cart - class.js';
@@ -10,7 +10,27 @@ import '../data/cart - class.js';
 import { cartDataInstance } from "../data/cart - class.js";
 // import { CartClass } from "../data/cart - class.js";
 
-loadBackendProductList(callBackLoadProductWait);
+// loading front page with callback
+// loadBackendProductList(callBackLoadProductWait);
+
+// loading front page with asyn, await
+// error handling in asyn, await
+
+async function loadProdateBrowseFrontPage(){ 
+  try{ 
+
+    await loadBackendProductListUsingFetch();
+    callBackLoadProductWait(); 
+
+  }catch(error){ 
+
+    console.log('unexpected error. Please try again later');
+  
+  }; 
+ 
+}
+
+loadProdateBrowseFrontPage();
 
 function callBackLoadProductWait(){
   let htmlGenerator = '';

@@ -148,3 +148,4 @@ let windBreaker = new RainCoat('Northface', 'Juno', 2)
 
 console.log(tShirt.isWaterRepellant());
 console.log(windBreaker.generalInfo())
+

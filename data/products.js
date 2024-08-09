@@ -1,6 +1,6 @@
 import { converterFunc } from "../scripts/utils/currencyConverter.js";
 
-class ProductClass{ 
+export class ProductClass{ 
   id;
   image;
   name;
@@ -29,7 +29,7 @@ class ProductClass{
 
 }
 
-class ClothingProductClass extends ProductClass{
+export class ClothingProductClass extends ProductClass{
   sizeChartLink;
   constructor(productObj){
     super(productObj);
@@ -56,7 +56,7 @@ class ClothingProductClass extends ProductClass{
 
 // }
 
-class Applicance extends ProductClass { 
+export class Applicance extends ProductClass { 
   instructionLink;
   warrantyLink; 
 
@@ -116,10 +116,39 @@ console.log(date.toLocaleTimeString())
 
 // console.log(product1);
 
+// Requesting backend data using fetch() instead of XMLHTTPRequest()
 export let productData = [];
+
+export function loadBackendProductListUsingFetch(){
+  let promise = fetch('https://supersimplebackend.dev/products').then((backendResponse)=>{
+    return backendResponse.json();
+  }).then((itemData)=>{
+    productData = itemData.map((productInfo)=>{
+      if(productInfo.type == 'clothing'){
+        return new ClothingProductClass(productInfo);
+      }else if(productInfo.type == 'appliance'){
+        return new Applicance(productInfo);
+      }
+      return new ProductClass(productInfo);
+    });
+    // error handling in Promise 
+  }).catch((error)=>{
+    console.log('unexpected error. Please try again later');
+  })
+  console.log('product list is loading');
+  return promise; 
+}
+
+
+/*
+loadBackendProductListUsingFetch().then(()=>{
+  console.log('next step');
+});
+*/
+
 export function loadBackendProductList(fun){
   let requestHeader = new XMLHttpRequest();
-
+  console.log('loading product list');
   requestHeader.addEventListener('load', ()=>{
     productData = JSON.parse(requestHeader.response).map((productInfo)=>{
         if(productInfo.type == 'clothing'){
@@ -129,18 +158,29 @@ export function loadBackendProductList(fun){
         }
         return new ProductClass(productInfo);
       });
-      fun(); // gonna run the main funtion on product front page //call back after load
+      fun(); // gonna run the main funtion on product front page (amazon_product.js) //call back after load
       console.log("--------------"); 
       console.log(productData);
       console.log(productData[0].name);
       console.log("--------------"); 
+  })
+
+  // error handling 
+  // separate callback just for error 
+
+  requestHeader.addEventListener('error',(error)=>{
+    console.log('unexpected error. Please try again later');
   })
   
   requestHeader.open('GET', 'https://supersimplebackend.dev/products'); 
   requestHeader.send(); 
 }
 
-loadBackendProductList(); 
+// loadBackendProductList(()=>{})
+
+// why did i put this line
+
+// loadBackendProductList(); 
 
 // export let productData = [
 //   {

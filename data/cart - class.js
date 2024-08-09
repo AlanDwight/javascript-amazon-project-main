@@ -9,6 +9,7 @@ import { deliveryOptions } from './deliveryOption.js';
 import { converterFunc } from '../scripts/utils/currencyConverter.js';
 import { cartData } from './cart.js';
 // import { cartData } from './cart.js';
+import { ProductClass,ClothingProductClass, Applicance } from './products.js';
 
 export class CartClass{
   // class properties
@@ -580,5 +581,32 @@ let data = [
 ]
 
 
+export function loadBackendCartList(fun){
+  let requestHeader = new XMLHttpRequest();
+  console.log('loading cart list');
+  requestHeader.addEventListener('load', ()=>{
+      console.log(requestHeader.response);
+      fun(); // gonna run the main funtion on product front page (amazon_product.js) //call back after load
+  });
+  
+  requestHeader.open('GET', 'https://supersimplebackend.dev/cart'); 
+  requestHeader.send(); 
+}
 
+let product = []; 
+export function loadBackendCartListUsingFetch(){
+  fetch('https://supersimplebackend.dev/products').then((backendResponse)=>{
+    console.log('cart list is loading');
+    return backendResponse.json(); 
+  }).then((data)=>{
+    product = data.map((productInfo)=>{
+      if(productInfo.type == 'clothing'){
+        return new ClothingProductClass(productInfo);
+      }else if(productInfo.type == 'appliance'){
+        return new Applicance(productInfo);
+      }
+      return new ProductClass(productInfo);
+    });
+  }); 
+}
 

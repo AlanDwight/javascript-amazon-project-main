@@ -1,11 +1,21 @@
 // import { cartData, dataCart } from "../../data/cart.js";
-import { dataGenerator } from "../../scripts/checkout.js"; 
+import { dataGenerator } from "../../scripts/checkout.js";
+import { loadBackendProductList } from "../../data/products.js";
 
 descirbe('test suite: checkout page testing', ()=>{
     it('cart list generator testing', ()=>{
         document.querySelector('.test-body').innerHTML = `
             <div class = "js-order-summary"></div>
         `;
+
+        beforeAll((done)=>{
+          loadBackendProductList(()=>{
+            done();
+          })
+        }); 
+        beforeEach(()=>{
+
+        })
         
         spyOn(localStorage, 'getItem').and.callFake(()=>{
             return JSON.stringify([
