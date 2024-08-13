@@ -19,6 +19,8 @@ import '../data/car.js';
 import { loadBackendProductList, loadBackendProductListUsingFetch} from "../data/products.js";
 import { loadBackendCartList } from "../data/cart - class.js";
 import { loadBackendCartListUsingFetch } from "../data/cart - class.js";
+import { cartData } from "../data/cart.js";
+import { addingOrders, orderList } from "../data/orders.js";
 
 // async, await vs promise vs callback 
 
@@ -237,7 +239,7 @@ function callBackLoadProductWait(){
     // let date = daysOpt.format('dddd, MMMM D');
     function dataGenerator(){
             let checkoutPageGenerator = ''; 
-            let totalCost = 0; 
+            let totalDeliveryCost = 0; 
             cartDataInstance.cartData.forEach((addedProduct, index)=>{
 
                 // let productItemId = addedProduct.productId; 
@@ -252,8 +254,8 @@ function callBackLoadProductWait(){
                 console.log(cartDataInstance.dateCalculation(addedProduct));
                 let placeHolderDate = cartDataInstance.dateCalculation(addedProduct);
                 let placeHolderPrice = cartDataInstance.dateCalculation(addedProduct); // need to figure out how to add all of the second element of array
-                totalCost += Number(placeHolderPrice.slice(0)[1]);
-                document.querySelector('.js-shipping-handling').innerHTML = `$${totalCost}`; 
+                totalDeliveryCost += Number(placeHolderPrice.slice(0)[1]);
+                document.querySelector('.js-shipping-handling').innerHTML = `$${totalDeliveryCost}`; 
 
 
                 let htmlGen = `<div class="cart-item-container-${addedProduct.productId}">
@@ -367,6 +369,8 @@ function callBackLoadProductWait(){
               })
             })
 
+            
+
     // cartData.forEach((item)=>{
 
       
@@ -432,13 +436,13 @@ function callBackLoadProductWait(){
       }
       return Number(shippingHandling2);
     }
-    orderSummary(totalCost);
+    orderSummary(totalDeliveryCost);
 
-    function orderSummary(totalCost){
+    function orderSummary(totalDeliveryCost){
                 if(totalCartItem == 0 ) { 
                   shippingHandling = 0;
                 } else { 
-                  shippingHandling = totalCost;
+                  shippingHandling = totalDeliveryCost;
                 }
 
                 let totalBeforeTax = (totalExpanse + shippingHandling).toFixed(2);
@@ -590,6 +594,33 @@ function callBackLoadProductWait(){
         
       })
     });
+    
+    document.querySelector('.js-place-order-button').addEventListener('click', async ()=>{
+
+      try{ 
+        
+        let response = await fetch('https://supersimplebackend.dev/orders', {
+          method : 'POST', 
+          headers : {
+            'Content-type' : 'Application/json'
+          },
+          body : JSON.stringify({
+            cart : cartDataInstance.cartData,
+          })
+        })
+  
+        let order = await response.json();
+        console.log('-------order--------');
+        console.log(order);
+        addingOrders(order);
+        // console.log(orderList)
+      }catch(error){ 
+        console.log('Unexpected network error. Please try again later'); 
+      }
+       
+      window.location.href = 'orders.html';
+
+    })
 
     function pageGen (newCart){
       newCart.forEach((addedProduct, index)=>{
@@ -822,7 +853,7 @@ function deliveryOptionGenerator(addedProductProductId){
 // let date = daysOpt.format('dddd, MMMM D');
 export function dataGenerator(){
         let checkoutPageGenerator = ''; 
-        let totalCost = 0; 
+        let totalDeliveryCost = 0; 
         cartDataInstance.cartData.forEach((addedProduct, index)=>{
 
             // let productItemId = addedProduct.productId; 
@@ -837,8 +868,8 @@ export function dataGenerator(){
             console.log(cartDataInstance.dateCalculation(addedProduct));
             let placeHolderDate = cartDataInstance.dateCalculation(addedProduct);
             let placeHolderPrice = cartDataInstance.dateCalculation(addedProduct); // need to figure out how to add all of the second element of array
-            totalCost += Number(placeHolderPrice.slice(0)[1]);
-            document.querySelector('.js-shipping-handling').innerHTML = `$${totalCost}`; 
+            totalDeliveryCost += Number(placeHolderPrice.slice(0)[1]);
+            document.querySelector('.js-shipping-handling').innerHTML = `$${totalDeliveryCost}`; 
 
 
             let htmlGen = `<div class="cart-item-container-${addedProduct.productId}">
@@ -1017,13 +1048,13 @@ function datePriceCal(datePriceArray){
   }
   return Number(shippingHandling2);
 }
-orderSummary(totalCost);
+orderSummary(totalDeliveryCost);
 
-function orderSummary(totalCost){
+function orderSummary(totalDeliveryCost){
             if(totalCartItem == 0 ) { 
               shippingHandling = 0;
             } else { 
-              shippingHandling = totalCost;
+              shippingHandling = totalDeliveryCost;
             }
 
             let totalBeforeTax = (totalExpanse + shippingHandling).toFixed(2);
