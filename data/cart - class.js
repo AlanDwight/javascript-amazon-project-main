@@ -252,6 +252,7 @@ export class CartClass{
     
     })
     document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
+    return totalQuantity; 
   };
   timerFunction(item){ 
     let timeOutFunc;

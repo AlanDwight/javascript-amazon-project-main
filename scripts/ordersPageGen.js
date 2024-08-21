@@ -46,38 +46,44 @@ let productList = '';
 console.log ('-0warr')
 console.log(orderList)
 
-let html = `
-<div class="order-container">
-  
-  <div class="order-header">
-    <div class="order-header-left-section">
-      <div class="order-date">
-        <div class="order-header-label">Order Placed:</div>
-        <div>${convertToMonthDate(orderList[0].orderTime)}</div>
+if(cartDataInstance.cartQuantityCalc() == 0){ 
+document.querySelector('.js-orders-grid').innerHTML = 'Wow Your Cart is Empty!';
+}else { 
+    let html = `
+    <div class="order-container">
+      
+      <div class="order-header">
+        <div class="order-header-left-section">
+          <div class="order-date">
+            <div class="order-header-label">Order Placed:</div>
+            <div>${convertToMonthDate(orderList[0].orderTime)}</div>
+          </div>
+          <div class="order-total">
+            <div class="order-header-label">Total:</div>
+            <div class="js-total-cost-update">$${converterFunc(orderList[0].totalCostCents)}</div>
+          </div>
+        </div>
+
+        <div class="order-header-right-section">
+          <div class="order-header-label">Order ID:</div>
+          <div>${orderList[0].id}</div>
+        </div>
       </div>
-      <div class="order-total">
-        <div class="order-header-label">Total:</div>
-        <div class="js-total-cost-update">$${converterFunc(orderList[0].totalCostCents)}</div>
+
+      <div class="order-details-grid js-order-details-grid-${orderList[0].id}">
+      <!-- <div class="order-details-grid js-order-details-grid"> -->
+      
       </div>
     </div>
 
-    <div class="order-header-right-section">
-      <div class="order-header-label">Order ID:</div>
-      <div>${orderList[0].id}</div>
-    </div>
-  </div>
+    
+    `; 
 
-  <div class="order-details-grid js-order-details-grid-${orderList[0].id}">
-  <!-- <div class="order-details-grid js-order-details-grid"> -->
-   
-  </div>
-</div>
+    orderPage += html;
+    document.querySelector('.js-orders-grid').innerHTML = orderPage;
+}
 
- 
-`; 
 
-orderPage += html;
-document.querySelector('.js-orders-grid').innerHTML = orderPage;
 
 productData.forEach((product, index)=>{
        
