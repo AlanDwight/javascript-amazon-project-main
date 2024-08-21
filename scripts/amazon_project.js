@@ -207,6 +207,9 @@ function callBackLoadProductWait(){
   // let timeOutFunc;
   document.querySelectorAll('.js-add-to-cart-button').forEach((item, index)=>{
       item.addEventListener('click', ()=>{
+        
+        // console.log('item item');
+
         // clearTimeout(timeOutFunc);
         // let totalQuantity = 0 ;
         // let quantityValue = Number(document.querySelector(`.js-quantity-selector-${item.dataset.itemId}`).value); 

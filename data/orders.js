@@ -14,6 +14,6 @@ export function addingOrders(order){
    console.log(orderList)
 }
 
-function saveOrderListToLocalStorage(){
+export function saveOrderListToLocalStorage(){
     localStorage.setItem('orderListData', JSON.stringify(orderList)); 
 }

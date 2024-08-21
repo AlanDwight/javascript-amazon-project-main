@@ -17,7 +17,7 @@ import '../data/car.js';
 // import '../data/backend.js';
 
 import { loadBackendProductList, loadBackendProductListUsingFetch} from "../data/products.js";
-import { loadBackendCartList } from "../data/cart - class.js";
+import { loadBackendCartList, loadCartFetch } from "../data/cart - class.js";
 import { loadBackendCartListUsingFetch } from "../data/cart - class.js";
 import { cartData } from "../data/cart.js";
 import { addingOrders, orderList } from "../data/orders.js";
@@ -51,6 +51,7 @@ async function loadPage() {  // return a promise
                       // await will return that and can be saved in 
                       // a variable like 'let var = await new Promise ... '                  
         })
+        loadCartFetch();
       })
 
       callBackLoadProductWait(); // render the page
@@ -63,7 +64,32 @@ async function loadPage() {  // return a promise
   
 }
 
-loadPage();  // can be added next step with then(). 
+// run product page with promise.all 
+async function loadPageV2(){ 
+  await Promise.all([
+    
+    loadBackendProductListUsingFetch().then(()=>{
+      return 'dataProduct';
+    }),
+    loadCartFetch().then(()=>{
+      return 'dataCart';
+    })
+
+  ]).then((value)=>{
+
+    callBackLoadProductWait();
+    console.log('----test promsie all -----');
+    console.log(value);
+    console.log('----test promsie all -----');
+  })
+}
+
+loadPageV2();
+// loadPage();  // can be added next step with then(). 
+
+async function loadCart() {
+  await loadCartFetch()
+}
 
 // async function loadPage() {  // return a promise
 //   console.log('load page async');

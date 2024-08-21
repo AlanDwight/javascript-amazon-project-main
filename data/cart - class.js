@@ -230,6 +230,19 @@ export class CartClass{
     dateArray.push(deliveryCharge);
     return dateArray ; 
   };
+  updatingOrderCartQuantity(item){
+    for(let i = 0 ; i < this.cartData.length ; i ++ ){ 
+      
+      if(item.dataset.buyAgain == this.cartData[i].productId){ 
+        this.cartData[i].quantity+= 1;
+        // console.log(this.cartData);
+  
+        this.cartQuantityCalc();
+        this.saveCartDataFunc(this.cartData);
+        return;
+      }
+    }
+  }
   // adding new method (optional)
   cartQuantityCalc(){ 
     let totalQuantity = 0 ;
@@ -613,4 +626,9 @@ export function loadBackendCartListUsingFetch(){
     });
   }); 
 }
-
+export async function loadCartFetch(){
+  let request = await fetch('https://supersimplebackend.dev/cart');
+  let response = await request.text(); 
+  console.log(response);
+  // return 'dataCart';
+}
