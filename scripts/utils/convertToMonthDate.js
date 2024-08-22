@@ -37,3 +37,55 @@ export function convertToMonthDate(isoString) {
     return dayName + ', ' + date.toLocaleDateString('en-US', options);
 }
 
+export function convertToMonthDateWithoutSkipping(isoString) {
+    const date = new Date(isoString);
+    const options = {month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', { day: 'numeric' })
+}
+
+export function calculatePercentageForTrackingProgressBar(orderDate,estDeliDate){
+    let date = new Date();
+    let currentDate = Number(date.toLocaleDateString('en-US', { day: 'numeric' }));
+    let currentMonth = date.toLocaleDateString('en-US', { month: 'long' });
+    let orderDateModify = Number((convertToMonthDate(orderDate).split(',')[1]).split(' ')[2]);
+    let estDeliveryTimeModify = Number((convertToMonthDate(estDeliDate).split(',')[1]).split(' ')[2]); 
+
+    let deliMonth; 
+    let trackingPercentage; 
+    
+    deliMonth = (convertToMonthDate(estDeliDate).split(',')[1]).split(' ')[1]; 
+    
+    if((convertToMonthDate(orderDate).split(',')[1]).split(' ')[1] == (convertToMonthDate(estDeliDate).split(',')[1]).split(' ')[1]){
+        trackingPercentage = ((currentDate - orderDateModify)/(estDeliveryTimeModify - orderDateModify))*100; 
+        return trackingPercentage;
+    }
+    
+    if(deliMonth == "September" || "April" || "June" || "November") { 
+        // 30
+        if(currentMonth != deliMonth){ 
+            trackingPercentage = ((currentDate - orderDateModify)/((estDeliveryTimeModify + 30) - orderDateModify))*100; 
+            return trackingPercentage;
+        }else if(currentMonth == deliMonth){ 
+            trackingPercentage = (((currentDate + 30) - orderDateModify)/((estDeliveryTimeModify + 30) - orderDateModify))*100; 
+            return trackingPercentage; 
+        }
+    }else if(deliMonth == "February" ){ 
+        // 28
+        if(currentMonth != deliMonth){ 
+            trackingPercentage = ((currentDate - orderDateModify)/((estDeliveryTimeModify + 28) - orderDateModify))*100; 
+            return trackingPercentage;
+        }else if(currentMonth == deliMonth){ 
+            trackingPercentage = (((currentDate + 28) - orderDateModify)/((estDeliveryTimeModify + 28) - orderDateModify))*100; 
+            return trackingPercentage; 
+        }
+    }else { 
+        // 31
+        if(currentMonth != deliMonth){ 
+            trackingPercentage = ((currentDate - orderDateModify)/((estDeliveryTimeModify + 31) - orderDateModify))*100; 
+            return trackingPercentage;
+        }else if(currentMonth == deliMonth){ 
+            trackingPercentage = (((currentDate + 31) - orderDateModify)/((estDeliveryTimeModify + 31) - orderDateModify))*100; 
+            return trackingPercentage; 
+        }
+    }
+}
