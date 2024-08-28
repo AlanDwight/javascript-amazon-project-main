@@ -6,6 +6,7 @@ export class ProductClass{
   name;
   rating;
   priceCents;
+  keywords;
 
   constructor(productObj){
     this.id = productObj.id; 
@@ -13,6 +14,7 @@ export class ProductClass{
     this.name = productObj.name; 
     this.rating = productObj.rating; 
     this.priceCents = productObj.priceCents;
+    this.keywords = productObj.keywords;
   }
 
   calculateStarRating(){
