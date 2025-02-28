@@ -278,15 +278,15 @@ function callBackLoadProductWait(){
                 // console.log(matchingItem);
                 // ${dayjs().add(1,"days").format('dddd, MMMM D')}
                 console.log(cartDataInstance.dateCalculation(addedProduct));
-                let placeHolderDate = cartDataInstance.dateCalculation(addedProduct);
-                let placeHolderPrice = cartDataInstance.dateCalculation(addedProduct); // need to figure out how to add all of the second element of array
-                totalDeliveryCost += Number(placeHolderPrice.slice(0)[1]);
+                let placeHolderDate = cartDataInstance.dateCalculation(addedProduct).slice(0)[0];
+                let placeHolderPrice = cartDataInstance.dateCalculation(addedProduct).slice(0)[1]; // need to figure out how to add all of the second element of array // already done
+                totalDeliveryCost += Number(placeHolderPrice);
                 document.querySelector('.js-shipping-handling').innerHTML = `$${totalDeliveryCost}`; 
 
 
                 let htmlGen = `<div class="cart-item-container-${addedProduct.productId}">
                           <div class="delivery-date delivery-date-${addedProduct.productId}">
-                            Delivery date: ${placeHolderDate.slice(0)[0]}
+                            Delivery date: ${placeHolderDate}
                           </div>
               
                           <div class="cart-item-details-grid">
@@ -371,12 +371,17 @@ function callBackLoadProductWait(){
 
             document.querySelectorAll('.delivery-option').forEach((item, index)=>{
               item.addEventListener('click', ()=>{
+                // console.log('---asdfasfafsafasfaf-----')
+                // console.log(item);
+                // console.log('---asdfasfafsafasfaf-----')
                 let productData = item.dataset.productId ; 
                 let productId = item.dataset.deliveryId;
                 let date = cartDataInstance.updateCartStorage(productData, productId, deliveryOptions);
                 
                 // console.log(date)
+                // ----------- no need ------------
                 document.querySelector(`.delivery-date-${productData}`).innerHTML = `Delivery date: ${date} `;
+                // ----------- no need ------------
                 cartDataInstance.saveCartDataFunc(cartDataInstance.cartData);
                 dataGenerator();
                 // console.log(productId);

@@ -130,7 +130,7 @@ export class CartClass{
     //   document.querySelector('.js-cart-quantity').innerText = `${totalQuantity}`;
     // };
     console.log(this.cartData);
-    console.log(totalQuantity);
+    // console.log(totalQuantity);
   
   };
   removeCartItem(cartItemId){ 
@@ -155,10 +155,13 @@ export class CartClass{
     this.cartData.forEach((item, index)=>{
       product == item.productId ? matchingItem = item : null ; 
     })
-    // console.log(matchingItem)
-    matchingItem.itemID = productID;
-    matchingItem.deliveryOptionId = productID;
-  
+    // reassigning existing item from cart with new itemID and new deliveryOptionId 
+    matchingItem.itemID = productID; 
+    matchingItem.deliveryOptionId = productID; // this line is redundant
+    
+    console.log(`match item ${matchingItem.itemID} and ${matchingItem.deliveryOptionId} and ${JSON.stringify(this.cartData)}`)
+
+    // -------------- no need --------------------
     deliveryOptions.forEach((options,index)=>{
       if(options.id == productID) {
         day = options.deliveryDays; 
@@ -166,10 +169,14 @@ export class CartClass{
     })
     let daysOpt = dayjs().add(Number(day), 'day');
     let date = daysOpt.format('dddd, MMMM D');
+    // -------------- no need --------------------
+
     // console.log(pro);
     // document.querySelector(`.delivery-date-${product}`).innerHTML = `Delivery date: ${date} `;
+    
+    // save function call below is redundant 
     this.saveCartDataFunc(this.cartData);
-    return date ; 
+    return date ; // no need to return this date
     
   };
   dateCalculation(addedProduct){
@@ -230,6 +237,7 @@ export class CartClass{
     dateArray.push(deliveryCharge);
     return dateArray ; 
   };
+  // for buy again button in orders page
   updatingOrderCartQuantity(item){
     for(let i = 0 ; i < this.cartData.length ; i ++ ){ 
       

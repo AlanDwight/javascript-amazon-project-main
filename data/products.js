@@ -123,12 +123,13 @@ export let productData = [];
 
 export function loadBackendProductListUsingFetch(){
   let promise = fetch('https://supersimplebackend.dev/products').then((backendResponse)=>{
+  // let promise = fetch('../../backend/products.json').then((backendResponse)=>{
     return backendResponse.json();
   }).then((itemData)=>{
     productData = itemData.map((productInfo)=>{
       if(productInfo.type == 'clothing'){
         return new ClothingProductClass(productInfo);
-      }else if(productInfo.type == 'appliance'){
+      }else if(productInfo.type == 'appliance' || productInfo.keywords.some(element => element == 'appliances')){
         return new Applicance(productInfo);
       }
       return new ProductClass(productInfo);
@@ -141,12 +142,18 @@ export function loadBackendProductListUsingFetch(){
   return promise; 
 }
 
+// productInfo.keywords.forEach(element => {
+//   if(element === 'appliances'){
+//     return new Applicance(productInfo);
+//   }});
 
 /*
 loadBackendProductListUsingFetch().then(()=>{
   console.log('next step');
 });
 */
+
+// i don't use this function below anymore 
 
 export function loadBackendProductList(fun){
   let requestHeader = new XMLHttpRequest();
@@ -896,10 +903,10 @@ export function loadBackendProductList(fun){
 //   return new ProductClass(productInfo);
 // });
 
-console.log("--------------"); 
+// console.log("--------------"); 
 // console.log(productData);
 // console.log(productData[0].name);
-console.log("--------------"); 
+// console.log("--------------"); 
 
 
 let product  = "shirt"; 

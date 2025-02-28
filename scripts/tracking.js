@@ -1,5 +1,5 @@
 import { orderList } from "../data/orders.js";
-import { loadBackendProductListUsingFetch, productData } from "../data/products.js";
+import { loadBackendProductListUsingFetch } from "../data/products.js";
 import { convertToMonthDate, convertToMonthDateWithoutSkipping ,calculatePercentageForTrackingProgressBar} from "./utils/convertToMonthDate.js";
 import { cartDataInstance } from "../data/cart - class.js";
 
@@ -15,17 +15,25 @@ let url = new URL(window.location.href);
 let productID = url.searchParams.get('productID'); 
 let orderID = url.searchParams.get('orderID'); 
 
-loadBackendProductListUsingFetch().then(()=>{
-    let matchingItem;
-    let matchingItemOrderDetails;
-    let matchingDataArray = []; 
-    let orderTime;
-    let estDeliveryTime;
-    productData.forEach((item,index)=>{
-        if(item.id === productID){ 
-            matchingItem = item;
-        }
-    })
+let matchingItem;
+let matchingItemOrderDetails;
+let matchingDataArray = []; 
+let orderTime;
+let estDeliveryTime;
+let productData; 
+    
+    fetch('https://supersimplebackend.dev/products')
+        .then((response) => response.json())
+        .then((json) => {
+        productData = json;
+        productData.forEach((item,index)=>{
+            if(item.id === productID){ 
+                matchingItem = item;
+            }
+            console.log('first loading')
+        })
+        }).then(()=>{
+    console.log('second loading')
     console.log(orderList)
     orderList.forEach((item,index)=>{
         if(item.id === orderID){ 
@@ -76,6 +84,7 @@ loadBackendProductListUsingFetch().then(()=>{
     // console.log(matchingData);
     return matchingDataArray; 
 }).then((matchingDataArray)=>{
+    console.log('third loading')
     let trackingPage = '';
     console.log('------------')
     console.log(matchingDataArray[0]);

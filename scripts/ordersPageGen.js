@@ -2,7 +2,7 @@ import { addingOrders, orderList, saveOrderListToLocalStorage } from "../data/or
 // console.log(orderList[0].products)
 import { converterFunc } from "./utils/currencyConverter.js";
 import { cartDataInstance } from "../data/cart - class.js";
-import { convertToMonthDate } from "./utils/convertToMonthDate.js";
+import { convertToMonthDate, convertToMonthDateWithoutSkipping } from "./utils/convertToMonthDate.js";
 import { cartData } from "../data/cart.js";
 
 let productData = orderList[0].products
@@ -56,7 +56,7 @@ document.querySelector('.js-orders-grid').innerHTML = 'Wow Your Cart is Empty!';
         <div class="order-header-left-section">
           <div class="order-date">
             <div class="order-header-label">Order Placed:</div>
-            <div>${convertToMonthDate(orderList[0].orderTime)}</div>
+            <div>${convertToMonthDateWithoutSkipping(orderList[0].orderTime)}</div>
           </div>
           <div class="order-total">
             <div class="order-header-label">Total:</div>
@@ -121,6 +121,47 @@ productData.forEach((product, index)=>{
           document.querySelector(`.js-order-details-grid-${product.id}`).innerHTML = productList; 
           
         })
+
+// new concept 
+
+
+// for(let i=0; i < orderList.length; i++){
+//   let html = `
+//   <div class="order-container">
+    
+//     <div class="order-header">
+//       <div class="order-header-left-section">
+//         <div class="order-date">
+//           <div class="order-header-label">Order Placed:</div>
+//           <div>${convertToMonthDate(orderList[i].orderTime)}</div>
+//         </div>
+//         <div class="order-total">
+//           <div class="order-header-label">Total:</div>
+//           <div class="js-total-cost-update">$${converterFunc(orderList[i].totalCostCents)}</div>
+//         </div>
+//       </div>
+
+//       <div class="order-header-right-section">
+//         <div class="order-header-label">Order ID:</div>
+//         <div>${orderList[i].id}</div>
+//       </div>
+//     </div>
+
+//     <div class="order-details-grid js-order-details-grid-${orderList[i].id}">
+//     <!-- <div class="order-details-grid js-order-details-grid"> -->
+    
+//     </div>
+//   </div>
+
+  
+//   `; 
+
+//   orderPage += html;
+//   document.querySelector('.js-orders-grid').innerHTML = orderPage;
+//  }
+// }
+
+// ----------------------------------
         
 // orderList.forEach((item, index)=>{
 //   orderList[index].products.forEach((product, index)=>{
